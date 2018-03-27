@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Frontend - fe.js</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+          rel="stylesheet" 
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+          crossorigin="anonymous" />
+    <link rel="stylesheet" href="style/css/fe.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Plugin_lab</h1>
+                <h2>Modal</h2>
+                <ul>
+                    <li><a onclick="demo1()">fe.modal.alert()</a></li>
+                    <li><a onclick="demo2()">fe.modal.message()</a></li>
+                    <li><a onclick="demo3()">fe.modal.html()</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" 
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
+            crossorigin="anonymous">
+    </script>
+    <script src="js/fe.js"></script>
+    <script>
+        function demo1(){
+            var config = {
+                message:'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+            };
+            fe.modal.alert(config);
+        }
+        function demo2(){
+            var config = {
+                title:'Modal title', 
+                message:'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+            };
+            fe.modal.message(config);
+        }
+        function demo3(){
+            var config = {
+                html:'<div id="modalHTML"><h2>Lorem ipsum</h2><p>Lorem ipsum dolor sit amet consectetur</p></div>'
+            };
+            fe.modal.message(config);
+        }
+    </script>
+
+    
+</body>
+</html>

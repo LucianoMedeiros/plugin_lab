@@ -18,18 +18,33 @@ Vejamos a estrutura do mesmo:
 //Javascript
 var fe = {
     modal: {
-        generateID: function(){},
         alert: function(args){},
         message: function(args){},
         html: function(args){},
         close: function(idModal, callback){},
         run: function(args){},
+        generateID: function(){}
     }
 };
 ```
 
+## Download
+[Clique para baixar o pacote](http://www.site.com.br/plugins/dist/fe.zip)
+
+## Instalação
+```HTML
+<!-- styles dentro da tag HEAD -->
+<link rel="stylesheet" type="text/css" href="path-your-site/css/fe.min.css" />
+
+<!-- scripts antes do fechamento do BODY -->
+<script src="path-your-site/js/jquery-3.3.1.min.js"></script>
+<script src="path-your-site/js/jquery-easing/1.4.1/jquery.easing.compatibility.js"></script>
+
+<script src="path-your-site/js/fe.min.js"></script>
+```
+
 ## argumentos (args)
-Cada function permite que seja passado um conjunto de argumentos para aumentar o poder de reutilização dos métodos.
+Cada *function* permite que seja passado um conjunto de argumentos para aumentar o poder de reutilização dos métodos.
 Existem argumentos que são obrigatórios e precisam ser observados.
 
 Todos os argumentos são agrupados num objeto javascript e passados todos de uma vez como argumento.
@@ -50,26 +65,39 @@ scrollTopOnOpen             | ✓ | ✓ | ✓ | ✓
 callbackFunctionNameOnClose | ✓ | ✓ | x | ✓
 
 #### id
-> Todos o modais possuem um id único a fim de identificá-los. Principalmente em casos onde há mais de um modal na página. Eles são gerados internamento através da function *modal.generateID()*
+> Todos o modais possuem um id único para identificá-los. Principalmente em casos onde há mais de um modal na página. Esse id é usado na função fechamento: *modal.close()*'.
 
 #### className 
-> Esse argumento é passado quando precisamos ter um modal com uma aparencia diferente.
+> Esse argumento é passado quando precisamos ter um modal com uma aparência diferente entre os modais.
 #### title  
-> aaa                     
+> Ele é usado quando usamos o modal do tipo *message()*. 
 #### message    
-> aaa                   
+> Argumento usado nos tipos *alert()* e *message()*.                   
 #### selector  
-> aaa                    
+> Argumento passado quando o conteudo do modal já existe na página e usado no modal tipo *html()*.                    
 #### html    
-> aaa                      
+> Objeto html passado quando o conteúdo é obtido por requisição *ajax*. 
 #### buttons   
-> aaa                    
+> Os botões não são obrigatórios. Você pode passar um objeto com as informações de cada botão, conforme exemplo a baixo: 
+```javascript
+//javascript
+var _buttons = [
+    {
+        text: 'Button Text',
+        className: 'cssClass',
+        callback: function(){ }, //será adicionado no evento 'onclick'
+        url: 'http://www.lorem.com' //será adicionado no 'href'
+    }
+];
+``` 
+
 #### ajaxUrl   
-> aaa                    
+> URL do local onde está o conteúdo do modal.
+
 #### scrollTopOnOpen   
-> aaa            
+> Este plugin faz com que além de abrir o modal, ele leva a posição do scroll da página para o início. Se quiser desabilitar esta função, user o valor ***false*** para este argumento.           
 #### callbackFunctionNameOnClose   
-> aaa
+> Você pode passar uma função para ser executada após o fechamento do modal *(callback)*, porém você deve passar o nome da função como *string*.
 
 ## modal.alert() 
 ### uso:
@@ -88,9 +116,9 @@ var _buttons = [
     }
 ];
 var config = {
-    message: "Hello world!", // obrigatório
+    message: "Hello world!",    // obrigatório
     className: "modal-wellcome",
-    scrollTopOnOpen: false // default TRUE
+    scrollTopOnOpen: false      // default TRUE
     buttons: _buttons,
     callbackFunctionNameOnClose: 'callbackFunctionName'
 };
@@ -115,7 +143,7 @@ fe.modal.alert(config)
         <div class="footer">
             <div class="grid-6">
                 <a class="btn-portal" 
-                   onclick="function (){ window.location.href = '/contactus' }"
+                   onclick="function() { window.location.href = '/contactus' }"
                    >Contact Us</a>
             </div>
             <div class="grid-6">
@@ -124,11 +152,117 @@ fe.modal.alert(config)
             </div>
         </div>
     </div>
-<div>
+</div>
 ```
 ## modal.message() 
+### uso:
+```javascript
+//javascript
+var _buttons = [
+    {
+        text: 'Contact Us',
+        className: 'btn-portal',
+        callback: function() { window.location.href = "/contactus" }
+    },
+    {
+        text: 'Go to Home',
+        className: 'btn-home',
+        url: 'http://www.site.com.br'
+    }
+];
+var config = {
+    title: "Modal title",       // obrigatório
+    message: "Hello world!",    // obrigatório
+    className: "modal-wellcome",
+    scrollTopOnOpen: false      // default TRUE
+    buttons: _buttons,
+    callbackFunctionNameOnClose: 'callbackFunctionName'
+};
+
+fe.modal.alert(config)
+```
+### código gerado 
+
+```HTML
+<!--HTML-->
+<div class="bx-overlay modal_000"></div>
+<div id="modal_000" class="bx-modal-area className">
+    <div class="bx-modal">
+        <div class="header">
+            <h1>Modal title</h1>
+            <a class="btn-close" 
+               onclick="fe.modal.close('modal_000');" 
+               title="Clique para fechar.">Fechar</a>
+        </div>
+        <div class="content">
+            <p>Hello world!</p>
+        </div>
+        <div class="footer">
+            <div class="grid-6">
+                <a class="btn-portal" 
+                   onclick="function() { window.location.href = '/contactus' }"
+                   >Contact Us</a>
+            </div>
+            <div class="grid-6">
+                <a class="btn-home" 
+                   href="http://www.site.com.br">Go to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+```
 ## modal.html() 
-## modal.close() 
+### uso: 
+```javascript
+//Caso passe o html inteiro como parâmetro
+var config1 = {
+    html: object,
+    className: 'modal-html'
+};
+
+//Caso passe o seletor do conteúdo do modal
+var config2 {
+    selector:'#modalConfirmacao', 
+    className:'modal-confirmacao'
+}
+
+//Caso o html venha de outra fonte
+var config3 {
+    ajaxurl:'http://www.site.com.br/routerName?param=XYZ', 
+    className:'modal-ajax'
+}
+
+fe.modal.html(config1);
+```
+### código gerado 
+
+```HTML
+<!--HTML-->
+<div class="bx-overlay modal_000"></div>
+<div id="modal_000" class="bx-modal-area className">
+    <div class="bx-modal">
+        <div class="header">
+            <a class="btn-close" 
+               onclick="fe.modal.close('modal_000');" 
+               title="Clique para fechar.">Fechar</a>
+        </div>
+        <div class="content">
+            <p>Hello world!</p>
+        </div>
+        <div class="footer">
+            <div class="grid-6">
+                <a class="btn-portal" 
+                   onclick="function() { window.location.href = '/contactus' }"
+                   >Contact Us</a>
+            </div>
+            <div class="grid-6">
+                <a class="btn-home" 
+                   href="http://www.site.com.br">Go to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+```
 
 
 
